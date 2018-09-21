@@ -1,6 +1,6 @@
 # Download Google Sheets with ESTK
 
-Utility tool for Adobe After Effects to download Google Sheets via ESTK. Available formats: `json, csv, xlsx, ods, pdf, tsv`
+Utility tool for Adobe After Effects & Photoshop to download Google Sheets via ESTK. Available formats: `json, csv, xlsx, ods, pdf, tsv`
 
 ## Use case
 
@@ -12,7 +12,7 @@ Utility tool for Adobe After Effects to download Google Sheets via ESTK. Availab
     /**
      * @param  {string} url             - Link to google sheets, as in https://docs.google.com/spreadsheets/d/{LONG_SPREADSHEET_ID}/edit#gid={SHEET_ID}
      * @param  {string} saveFile        - Path to file object where sheet will be saved
-     * @param  {array} optionalFormats 	- Array of optional formats to download, any of ['json', csv', 'xlsx', 'ods', 'pdf', 'tsv'];
+     * @param  {array} optionalFormats 	- Array of optional formats to download, any of ['json', 'csv', 'xlsx', 'ods', 'pdf', 'tsv'];
      * @return {file object}            - Google Sheet file object
      */
     downloadGoogleSheet(url, saveFile, optionalFormats)

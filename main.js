@@ -1,6 +1,6 @@
 /*
 	Download Google Sheets with ESTK
-	Utility tool for Adobe After Effects to download Google Sheets via ESTK. Available formats: `json, csv, xlsx, ods, pdf, tsv`
+	Utility tool for Adobe After Effects & Photoshop to download Google Sheets via ESTK. Available formats: `json, csv, xlsx, ods, pdf, tsv`
 	
 	Developed by Alex White https://aescripts.com/authors/a-b/alex-white/
 	and renderTom https://aescripts.com/authors/q-r/rendertom/
@@ -20,7 +20,7 @@
 	 * downloadGoogleSheet description
 	 * @param  {string} url             - Link to google sheets, as in https://docs.google.com/spreadsheets/d/{LONG_SPREADSHEET_ID}/edit#gid={SHEET_ID}
 	 * @param  {string} saveFile        - Path to file object where sheet will be saved
-	 * @param  {array} optionalFormats 	- Array of optional formats to download, any of ['json', csv', 'xlsx', 'ods', 'pdf', 'tsv'];
+	 * @param  {array} optionalFormats 	- Array of optional formats to download, any of ['json', 'csv', 'xlsx', 'ods', 'pdf', 'tsv'];
 	 * @return {file object}            - Google Sheet file object
 	 */
 	function downloadGoogleSheet(url, saveFile, optionalFormats) {
@@ -31,6 +31,7 @@
 			spreadsheetID: '/spreadsheets/d/([a-zA-Z0-9-_]+)',
 			sheetID: '[#&]gid=([0-9]+)',
 		};
+		var appName = BridgeTalk.appName;
 		var IDs = {
 			spreadsheetID: undefined,
 			sheetID: undefined,
@@ -93,7 +94,7 @@
 		var saveFormats, extension, newFile;
 
 		try {
-			if (!ae.canWriteFiles()) {
+			if (appName === 'aftereffects' && !ae.canWriteFiles()) {
 				return null;
 			}
 
@@ -192,7 +193,7 @@
 			// curlExe = File('path_to_curl_on_Windows'); // require curl.exe to work properly on Windows
 			isWindows = $.os.indexOf('Windows') != -1;
 			saveFile = file.makeSureItsFileObject(saveFile);
-			
+
 			if (isWindows) {
 				if (typeof curlExe === 'undefined') {
 					throw 'In order to download files on Windows OS you need to provide a path to curl.exe file';
@@ -202,13 +203,30 @@
 
 			cmd = '"' + curl + '" -s -o "' + saveFile.fsName + '" -L "' + fileURL + '"';
 
-			system.callSystem(cmd);
+			callSystem(cmd);
 
 			if (!saveFile.exists) {
 				throw 'Unable to download file.\nRequested URL: ' + fileURL + '\n\nPlease check your internet connection and firewall.';
 			}
 
 			return saveFile;
+
+			function callSystem(cmd) {
+				var response, tempOutputFile;
+
+				if (appName === 'aftereffects') {
+					response = system.callSystem(cmd);
+				} else if (appName === 'photoshop') {
+					tempOutputFile = Folder.temp.fsName + '/' + Math.round(Math.random() * (new Date()).getTime() * 21876);
+
+					app.system(cmd + " > " + tempOutputFile);
+					response = file.readContent(tempOutputFile);
+					File(tempOutputFile).remove();
+				} else {
+					throw 'Cannot run callSystem function in ' + appName;
+				}
+				return response;
+			}
 		}
 		/**
 		 * @param  {object} saveFile       - File Object to save sheet to.
