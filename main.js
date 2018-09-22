@@ -194,6 +194,8 @@
 			isWindows = $.os.indexOf('Windows') != -1;
 			saveFile = file.makeSureItsFileObject(saveFile);
 
+			checkInternetConnection();
+
 			if (isWindows) {
 				if (typeof curlExe === 'undefined') {
 					throw 'In order to download files on Windows OS you need to provide a path to curl.exe file';
@@ -210,6 +212,28 @@
 			}
 
 			return saveFile;
+
+			/**
+			 * Poor man's way to check for internet connection using command line and ping;
+			 * @return {void} - nothing.
+			 */
+			function checkInternetConnection() {
+				var server, pingCount, waitTime, cmd, response;
+
+				server = '216.58.209.46'; // google.com
+				pingCount = 1;
+				waitTime = 50;
+
+				cmd = 'ping ' + server + ' -c ' + pingCount + ' -W ' + waitTime;
+				if (isWindows) {
+					cmd = 'ping ' + server + ' -n ' + pingCount + ' -w ' + waitTime;
+				}
+
+				response = callSystem(cmd);
+				if (isWindows && response.match('unreachable|(100% loss)') || response.match('100.0% packet loss')) {
+					throw 'Cannot connect to the internet';
+				}
+			}
 
 			function callSystem(cmd) {
 				var response, tempOutputFile;
