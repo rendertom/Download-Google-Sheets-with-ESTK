@@ -190,7 +190,7 @@
 			var curl, curlExe, isWindows, cmd;
 
 			curl = 'curl';
-			// curlExe = File('path_to_curl_on_Windows'); // require curl.exe to work properly on Windows
+			curlExe = File("curl/curl 7.38.exe"); // requires curl.exe to work on Windows
 			isWindows = $.os.indexOf('Windows') != -1;
 			saveFile = file.makeSureItsFileObject(saveFile);
 

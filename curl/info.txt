@@ -1,0 +1,3 @@
+curl 7.38.0 (i386-pc-win32) libcurl/7.38.0 WinSSL zlib/1.2.8
+Protocols: dict file ftp ftps gopher http https imap imaps ldap pop3 pop3s rtsp smtp smtps telnet tftp
+Features: AsynchDNS IPv6 Largefile SSPI SPNEGO NTLM SSL libz

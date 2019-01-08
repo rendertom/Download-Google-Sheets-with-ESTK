@@ -20,7 +20,7 @@ Utility tool for Adobe After Effects & Photoshop to download Google Sheets via E
 
 ## Notes
 
-- Path to `curl.exe` is required to work properly on Windows.
+- `curl.exe` is required to work on Windows.
 - Make sure your Google Sheet is published to the web:
   - In Google Docs chose `File -> Publish to the web...`
   - Select to publish `Entire Document` as `Web page` and click `Publish`.
